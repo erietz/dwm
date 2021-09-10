@@ -1,3 +1,5 @@
+# About
+
 This branch is my personal fork of dwm. I created it by:
 
 ```sh
@@ -18,4 +20,23 @@ To push updates to my fork
 
 ```sh
 git push origin ewr
+```
+
+## Installation
+
+`make`
+
+`sudo make install`
+
+Create a file `dwm.desktop` file at `/usr/share/xsessions/dwm.desktop`
+containing the following
+
+```conf
+[Desktop Entry]
+Encoding=UTF-8
+Name=Dwm
+Comment=Dynamic window manager
+Exec=dwm
+Icon=dwm
+Type=XSession
 ```
