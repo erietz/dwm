@@ -13,3 +13,9 @@ To pull updates from suckless
 ```sh
 git pull upstream/master
 ```
+
+To push updates to my fork
+
+```sh
+git push origin ewr
+```
