@@ -40,3 +40,11 @@ Exec=dwm
 Icon=dwm
 Type=XSession
 ```
+
+## Recompiling
+
+Since some of the patches that have been applied modify `config.def.h`, I have
+added `config.h` to the `clean` rule in the `Makefile`. `config.h` is
+regenerated after running `make`.
+
+To recompile the software run `sudo make clean install`
