@@ -1,4 +1,11 @@
-/* See LICENSE file for copyright and license details. */
+/* Author      : Ethan Rietz */
+/* Date        : 2021-09-11 */
+/* Description : Config file for DWM */
+
+/*
+ * Patches applied:
+ * - systray: https://dwm.suckless.org/patches/systray/dwm-systray-20210418-67d76bd.diff
+ */
 
 /* appearance */
 static const unsigned int borderpx  = 1;        /* border pixel of windows */
