@@ -4,7 +4,8 @@
 
 /*
  * Patches applied:
- * - systray: https://dwm.suckless.org/patches/systray/dwm-systray-20210418-67d76bd.diff
+ * - systray: https://dwm.suckless.org/patches/systray/
+ * - centeredmaster: https://dwm.suckless.org/patches/centeredmaster/
  */
 
 /* appearance */
