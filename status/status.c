@@ -1,3 +1,9 @@
+/*
+ * Author      : Ethan Rietz
+ * Date        : 2021-10-04
+ * Description : A status line that is more efficient than a shell scripts
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
