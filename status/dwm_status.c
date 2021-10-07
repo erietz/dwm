@@ -97,7 +97,7 @@ char* print_date() {
     char s[64];
     strftime(s, sizeof(s), "%c", tm);
     char date[COMPONENT_LENGTH];
-    sprintf(date, "%s\n", s);
+    sprintf(date, "%s", s);
     return strdup(date);
 }
 
