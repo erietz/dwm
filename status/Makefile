@@ -1,9 +1,16 @@
-MAIN := dwm_status
+BIN := dwm_status
+# CFLAGS := -Wall -Wextra -g
 
-all: $(MAIN)
+all: $(BIN)
 
 %: %.c
-	gcc $^ -o $@
+	gcc $(CFLAGS) $^ -o $@
 
-run: $(MAIN)
-	./$(MAIN)
+run: $(BIN)
+	./$(BIN)
+
+debug: $(BIN)
+	valgrind --leak-check=full --show-leak-kinds=all $(BIN)
+
+clean:
+	rm $(BIN)

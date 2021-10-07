@@ -10,64 +10,59 @@
 #include <unistd.h>
 #include <time.h>
 
-#define STATUS_LENGTH 256
-#define COMPONENT_LENGTH 20
+#define STATUS_LENGTH 1000
+#define COMPONENT_LENGTH 30
+#define PARSE_ERROR "bad parsing..."
 
 char* print_storage()
 {
     FILE *fp;
-    char *line = NULL;
+    char *line = NULL;  // getline() will allocate enough memory for &line
     size_t len = 0;
     ssize_t read;
 
     fp = popen("df -Ht ext4", "r");
-    if (fp == NULL)
-        exit(EXIT_FAILURE);
+    if (fp == NULL) return "not ext4 drive";
 
-    /* The output looks likes this and we are parsing the second line */
-
-    /* Filesystem      Size  Used Avail Use% Mounted on */
-    /* /dev/dm-0       237G   56G  170G  25% / */
+    /*
+     * The output looks likes this and we are parsing the second line
+     *
+     * Filesystem      Size  Used Avail Use% Mounted on
+     * /dev/dm-0       237G   56G  170G  25% /
+     *
+     */
 
     while ((read = getline(&line, &len, fp)) != -1) {
-        /* printf("%s", line); */
-
         if (strstr(line, "/dev/")) {
-            strtok(line, " ");
-            char *total = strtok(NULL, " ");
-            /* strtok(NULL, " "); // for getting the 4th column rather than 3rd */
-            char *avail = strtok(NULL, " ");
+            strtok(line, " ");                  // field 1
+            char *total = strtok(NULL, " ");    // field 2
+            char *avail = strtok(NULL, " ");    // field 3
 
             char storage[COMPONENT_LENGTH];
-            sprintf(storage, "%s/%s", avail, total);
+            snprintf(storage, COMPONENT_LENGTH - 1, "%s/%s", avail, total);
 
             fclose(fp);
-            if (line)
-                free(line);
+            if (line) free(line);
             return strdup(storage);
         }
     }
 
     fclose(fp);
-    if (line)
-        free(line);
-    exit(EXIT_SUCCESS);
-
+    if (line) free(line);
+    return PARSE_ERROR;
 }
 
 char* print_memory()
 {
     FILE *fp;
-    char *line = NULL;
+    char *line = NULL;  // getline() will allocate memory for &line
     size_t len = 0;
     ssize_t read;
 
     fp = fopen("/proc/meminfo", "r");
-    if (fp == NULL)
-        exit(EXIT_FAILURE);
+    if (fp == NULL) return "no meminfo";
 
     while ((read = getline(&line, &len, fp)) != -1) {
-        /* printf("%s", line); */
 
         if (strstr(line, "MemAvailable")) {
             strtok(line, " ");
@@ -75,66 +70,65 @@ char* print_memory()
             float avail = atof(availChar);
 
             char memory[COMPONENT_LENGTH];
-            sprintf(memory, "%.2f GiB", avail / 1024 / 1024);
+            snprintf(memory, COMPONENT_LENGTH - 1, "%.2f GiB", avail / 1024 / 1024);
 
             fclose(fp);
-            if (line)
-                free(line);
+            if (line) free(line);
             return strdup(memory);
         }
     }
 
     fclose(fp);
-    if (line)
-        free(line);
-    exit(EXIT_SUCCESS);
+    if (line) free(line);
+    return PARSE_ERROR;
 
 }
 
 char* print_date() {
     time_t t = time(NULL);
     struct tm *tm = localtime(&t);
-    char s[64];
-    strftime(s, sizeof(s), "%c", tm);
-    char date[COMPONENT_LENGTH];
-    sprintf(date, "%s", s);
-    return strdup(date);
+    char s[COMPONENT_LENGTH];
+    strftime(s, COMPONENT_LENGTH, "%x %X", tm);
+    return strdup(s);
 }
 
 char* print_battery() {
-    // TODO this is dumb because it will print 10% when at 100%
     FILE *fp;
-    char line[2];
-    size_t len = 0;
-    ssize_t read;
+    char line[COMPONENT_LENGTH];
 
     fp = fopen("/sys/class/power_supply/BAT0/capacity", "r");
-    if (fp == NULL)
-        return "no bat";
+    if (fp == NULL) return "no bat";
 
-    line[0] = fgetc(fp);
-    line[1] = fgetc(fp);
+    fgets(line, sizeof(line), fp);
+    size_t len = strlen(line);
+    if (len > 0 && line[len-1] == '\n') {
+        line[len-1] = '\0';
+    }
 
     fclose(fp);
-    return strcat(strdup(line), "% charge");
 
+    strcat(line, "% charge");
+    char tmp[COMPONENT_LENGTH];
+    snprintf(tmp, COMPONENT_LENGTH, "%s", line);
+
+    return strdup(tmp);
 }
 
 char* print_temperature() {
     FILE *fp;
-    char line[2];
-    size_t len = 0;
-    ssize_t read;
+    char line[COMPONENT_LENGTH];
 
     fp = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
-    if (fp == NULL)
-        return "no bat";
+    if (fp == NULL) return "no temp";
 
     line[0] = fgetc(fp);
     line[1] = fgetc(fp);
+    line[2] = '\0';
+
+    strcat(line, " C");
 
     fclose(fp);
-    return strcat(strdup(line), " C");
+    return strdup(line);
 
 }
 
@@ -148,7 +142,14 @@ int main(void)
         char *battery = print_battery();
         char *temperature = print_temperature();
 
-        sprintf(cmd, "xsetroot -name \"%s | %s | %s | %s | %s\"", storage, memory, temperature, battery, date);
+        snprintf(cmd, STATUS_LENGTH, "xsetroot -name \"%s | %s | %s | %s | %s\"",
+            storage, 
+            memory,
+            temperature,
+            battery,
+            date
+        );
+
         system(cmd);
         /* puts(cmd); */
         sleep(1);
