@@ -149,8 +149,8 @@ int main(void)
     char cmd[STATUS_LENGTH];
     while (1) {
         sprintf(cmd, "xsetroot -name \"%s | %s | %s | %s | %s\"", storage, memory, temperature, battery, date);
-        /* system(cmd); */
-        puts(cmd);
+        system(cmd);
+        /* puts(cmd); */
         sleep(1);
     }
 
