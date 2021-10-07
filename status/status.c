@@ -102,6 +102,7 @@ char* print_date() {
 }
 
 char* print_battery() {
+    // TODO this is dumb because it will print 10% when at 100%
     FILE *fp;
     char line[2];
     size_t len = 0;
@@ -119,16 +120,35 @@ char* print_battery() {
 
 }
 
+char* print_temperature() {
+    FILE *fp;
+    char line[2];
+    size_t len = 0;
+    ssize_t read;
+
+    fp = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
+    if (fp == NULL)
+        return "no bat";
+
+    line[0] = fgetc(fp);
+    line[1] = fgetc(fp);
+
+    fclose(fp);
+    return strcat(strdup(line), " C");
+
+}
+
 int main(void)
 {
     char *storage = print_storage();
     char *memory = print_memory();
     char *date = print_date();
     char *battery = print_battery();
+    char *temperature = print_temperature();
 
     char cmd[STATUS_LENGTH];
     while (1) {
-        sprintf(cmd, "xsetroot -name \"%s | %s | %s | %s\"", storage, memory, battery, date);
+        sprintf(cmd, "xsetroot -name \"%s | %s | %s | %s | %s\"", storage, memory, temperature, battery, date);
         /* system(cmd); */
         puts(cmd);
         sleep(1);
