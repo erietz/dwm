@@ -9,6 +9,9 @@
 #include <string.h>
 #include <unistd.h>
 
+#define STATUS_LENGTH 256
+#define COMPONENT_LENGTH 20
+
 char* print_storage()
 {
     FILE *fp;
@@ -34,7 +37,7 @@ char* print_storage()
             /* strtok(NULL, " "); // for getting the 4th column rather than 3rd */
             char *avail = strtok(NULL, " ");
 
-            char storage[20];
+            char storage[COMPONENT_LENGTH];
             sprintf(storage, "%s/%s", avail, total);
 
             fclose(fp);
@@ -51,13 +54,50 @@ char* print_storage()
 
 }
 
+char* print_memory()
+{
+    FILE *fp;
+    char *line = NULL;
+    size_t len = 0;
+    ssize_t read;
+
+    fp = fopen("/proc/meminfo", "r");
+    if (fp == NULL)
+        exit(EXIT_FAILURE);
+
+    while ((read = getline(&line, &len, fp)) != -1) {
+        /* printf("%s", line); */
+
+        if (strstr(line, "MemAvailable")) {
+            strtok(line, " ");
+            char *availChar = strtok(NULL, " ");
+            float avail = atof(availChar);
+
+            char memory[COMPONENT_LENGTH];
+            sprintf(memory, "%.2f GiB", avail / 1024 / 1024);
+
+            fclose(fp);
+            if (line)
+                free(line);
+            return strdup(memory);
+        }
+    }
+
+    fclose(fp);
+    if (line)
+        free(line);
+    exit(EXIT_SUCCESS);
+
+}
+
 int main(void)
 {
     char *storage = print_storage();
+    char *memory = print_memory();
 
-    char cmd[100];
+    char cmd[STATUS_LENGTH];
     while (1) {
-        sprintf(cmd, "xsetroot -name \"%s\"", storage);
+        sprintf(cmd, "xsetroot -name \"%s | %s\"", storage, memory);
         /* system(cmd); */
         puts(cmd);
         sleep(1);
