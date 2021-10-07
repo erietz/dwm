@@ -1,13 +1,14 @@
 /*
  * Author      : Ethan Rietz
  * Date        : 2021-10-04
- * Description : A status line that is more efficient than a shell scripts
+ * Description : A status line that is more efficient than a shell script
  */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <time.h>
 
 #define STATUS_LENGTH 256
 #define COMPONENT_LENGTH 20
@@ -90,14 +91,25 @@ char* print_memory()
 
 }
 
+char* print_date() {
+    time_t t = time(NULL);
+    struct tm *tm = localtime(&t);
+    char s[64];
+    strftime(s, sizeof(s), "%c", tm);
+    char date[COMPONENT_LENGTH];
+    sprintf(date, "%s\n", s);
+    return strdup(date);
+}
+
 int main(void)
 {
     char *storage = print_storage();
     char *memory = print_memory();
+    char *date = print_date();
 
     char cmd[STATUS_LENGTH];
     while (1) {
-        sprintf(cmd, "xsetroot -name \"%s | %s\"", storage, memory);
+        sprintf(cmd, "xsetroot -name \"%s | %s | %s\"", storage, memory, date);
         /* system(cmd); */
         puts(cmd);
         sleep(1);
