@@ -10,7 +10,7 @@ run: $(BIN)
 	./$(BIN)
 
 debug: $(BIN)
-	valgrind --leak-check=full --show-leak-kinds=all $(BIN)
+	valgrind -s --leak-check=full --show-leak-kinds=all ./dwm_status
 
 clean:
 	rm $(BIN)

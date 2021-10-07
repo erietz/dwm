@@ -39,7 +39,7 @@ char* print_storage()
             char *avail = strtok(NULL, " ");    // field 3
 
             char storage[COMPONENT_LENGTH];
-            snprintf(storage, COMPONENT_LENGTH - 1, "%s/%s", avail, total);
+            snprintf(storage, COMPONENT_LENGTH, "%s/%s", avail, total);
 
             fclose(fp);
             if (line) free(line);
@@ -70,7 +70,7 @@ char* print_memory()
             float avail = atof(availChar);
 
             char memory[COMPONENT_LENGTH];
-            snprintf(memory, COMPONENT_LENGTH - 1, "%.2f GiB", avail / 1024 / 1024);
+            snprintf(memory, COMPONENT_LENGTH, "%.2f GiB", avail / 1024 / 1024);
 
             fclose(fp);
             if (line) free(line);
