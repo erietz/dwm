@@ -140,14 +140,14 @@ char* print_temperature() {
 
 int main(void)
 {
-    char *storage = print_storage();
-    char *memory = print_memory();
-    char *date = print_date();
-    char *battery = print_battery();
-    char *temperature = print_temperature();
-
     char cmd[STATUS_LENGTH];
     while (1) {
+        char *storage = print_storage();
+        char *memory = print_memory();
+        char *date = print_date();
+        char *battery = print_battery();
+        char *temperature = print_temperature();
+
         sprintf(cmd, "xsetroot -name \"%s | %s | %s | %s | %s\"", storage, memory, temperature, battery, date);
         system(cmd);
         /* puts(cmd); */

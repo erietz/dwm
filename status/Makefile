@@ -1,7 +1,9 @@
-all: status
+MAIN := dwm_status
+
+all: $(MAIN)
 
 %: %.c
 	gcc $^ -o $@
 
-run: status
-	./status
+run: $(MAIN)
+	./$(MAIN)
