@@ -101,15 +101,34 @@ char* print_date() {
     return strdup(date);
 }
 
+char* print_battery() {
+    FILE *fp;
+    char line[2];
+    size_t len = 0;
+    ssize_t read;
+
+    fp = fopen("/sys/class/power_supply/BAT0/capacity", "r");
+    if (fp == NULL)
+        return "no bat";
+
+    line[0] = fgetc(fp);
+    line[1] = fgetc(fp);
+
+    fclose(fp);
+    return strcat(strdup(line), "% charge");
+
+}
+
 int main(void)
 {
     char *storage = print_storage();
     char *memory = print_memory();
     char *date = print_date();
+    char *battery = print_battery();
 
     char cmd[STATUS_LENGTH];
     while (1) {
-        sprintf(cmd, "xsetroot -name \"%s | %s | %s\"", storage, memory, date);
+        sprintf(cmd, "xsetroot -name \"%s | %s | %s | %s\"", storage, memory, battery, date);
         /* system(cmd); */
         puts(cmd);
         sleep(1);
