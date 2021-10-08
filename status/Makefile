@@ -1,5 +1,5 @@
 BIN := dwm_status
-CFLAGS := -Wall -Wextra -g
+# CFLAGS := -Wall -Wextra -g
 
 all: $(BIN)
 

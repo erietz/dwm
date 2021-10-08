@@ -10,12 +10,12 @@
 #include <unistd.h>
 #include <time.h>
 
-#define STATUS_LENGTH 1000
+#define STATUS_LENGTH 400
 #define COMPONENT_LENGTH 30
 #define PARSE_ERROR "bad parsing..."
 
 void
-print_storage(char *storage)
+get_storage(char *storage)
 {
     FILE *fp;
     char *line = NULL;  // getline() will allocate enough memory for &line
@@ -58,7 +58,7 @@ print_storage(char *storage)
 }
 
 void
-print_memory(char *memory)
+get_memory(char *memory)
 {
     FILE *fp;
     char *line = NULL;  // getline() will allocate memory for &line
@@ -94,7 +94,7 @@ print_memory(char *memory)
 }
 
 void
-print_date(char *date) {
+get_date(char *date) {
     time_t t = time(NULL);
     struct tm *tm = localtime(&t);
     strftime(date, COMPONENT_LENGTH, "%x %X", tm);
@@ -102,7 +102,7 @@ print_date(char *date) {
 }
 
 void
-print_battery(char *battery) {
+get_battery(char *battery) {
     FILE *fp;
 
     fp = fopen("/sys/class/power_supply/BAT0/capacity", "r");
@@ -127,7 +127,7 @@ print_battery(char *battery) {
 }
 
 void
-print_temperature(char *temperature) {
+get_temperature(char *temperature) {
     FILE *fp;
 
     fp = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
@@ -156,13 +156,14 @@ int main(void)
         char battery[COMPONENT_LENGTH];
         char temperature[COMPONENT_LENGTH];
 
-        print_storage(storage);
-        print_memory(memory);
-        print_date(date);
-        print_battery(battery);
-        print_temperature(temperature);
+        get_storage(storage);
+        get_memory(memory);
+        get_date(date);
+        get_battery(battery);
+        get_temperature(temperature);
 
-        snprintf(cmd, STATUS_LENGTH, "xsetroot -name \"%s | %s | %s | %s | %s\"",
+        snprintf(cmd, STATUS_LENGTH,
+            "xsetroot -name \"%s | %s | %s | %s | %s\"",
             storage, 
             memory,
             temperature,
