@@ -152,6 +152,12 @@ int main(void)
 
         system(cmd);
         /* puts(cmd); */
+
+        if (storage) free(storage);
+        if (memory) free(memory);
+        if (date) free(date);
+        if (battery) free(battery);
+        if (temperature) free(temperature);
         sleep(1);
     }
 
