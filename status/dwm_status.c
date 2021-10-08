@@ -137,9 +137,9 @@ get_temperature(char *temperature) {
 
     temperature[0] = fgetc(fp);
     temperature[1] = fgetc(fp);
-    temperature[2] = '\0';
-
-    strncat(temperature, " C", COMPONENT_LENGTH);
+    temperature[2] = ' ';
+    temperature[3] = 'C';
+    temperature[4] = '\0';
 
     fclose(fp);
     return;
