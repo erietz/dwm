@@ -14,7 +14,8 @@
 #define COMPONENT_LENGTH 30
 #define PARSE_ERROR "bad parsing..."
 
-char* print_storage()
+void
+print_storage(char *storage)
 {
     FILE *fp;
     char *line = NULL;  // getline() will allocate enough memory for &line
@@ -22,7 +23,10 @@ char* print_storage()
     ssize_t read;
 
     fp = popen("df -Ht ext4", "r");
-    if (fp == NULL) return "not ext4 drive";
+    if (fp == NULL) {
+        strncpy(storage, "not ext4 drive", COMPONENT_LENGTH);
+        return;
+    }
 
     /*
      * The output looks likes this and we are parsing the second line
@@ -38,21 +42,23 @@ char* print_storage()
             char *total = strtok(NULL, " ");    // field 2
             char *avail = strtok(NULL, " ");    // field 3
 
-            char storage[COMPONENT_LENGTH];
             snprintf(storage, COMPONENT_LENGTH, "%s/%s", avail, total);
 
             fclose(fp);
             if (line) free(line);
-            return strdup(storage);
+            return;
         }
     }
 
     fclose(fp);
     if (line) free(line);
-    return PARSE_ERROR;
+
+    strncpy(storage, PARSE_ERROR, COMPONENT_LENGTH);
+    return;
 }
 
-char* print_memory()
+void
+print_memory(char *memory)
 {
     FILE *fp;
     char *line = NULL;  // getline() will allocate memory for &line
@@ -60,7 +66,10 @@ char* print_memory()
     ssize_t read;
 
     fp = fopen("/proc/meminfo", "r");
-    if (fp == NULL) return "no meminfo";
+    if (fp == NULL) {
+        strncpy(memory, "no meminfo", COMPONENT_LENGTH);
+        return;
+    }
 
     while ((read = getline(&line, &len, fp)) != -1) {
 
@@ -69,66 +78,71 @@ char* print_memory()
             char *availChar = strtok(NULL, " ");
             float avail = atof(availChar);
 
-            char memory[COMPONENT_LENGTH];
             snprintf(memory, COMPONENT_LENGTH, "%.2f GiB", avail / 1024 / 1024);
 
             fclose(fp);
             if (line) free(line);
-            return strdup(memory);
+            return;
         }
     }
 
     fclose(fp);
     if (line) free(line);
-    return PARSE_ERROR;
+    strncpy(memory, PARSE_ERROR, COMPONENT_LENGTH);
+    return;
 
 }
 
-char* print_date() {
+void
+print_date(char *date) {
     time_t t = time(NULL);
     struct tm *tm = localtime(&t);
-    char s[COMPONENT_LENGTH];
-    strftime(s, COMPONENT_LENGTH, "%x %X", tm);
-    return strdup(s);
+    strftime(date, COMPONENT_LENGTH, "%x %X", tm);
+    return;
 }
 
-char* print_battery() {
+void
+print_battery(char *battery) {
     FILE *fp;
-    char line[COMPONENT_LENGTH];
 
     fp = fopen("/sys/class/power_supply/BAT0/capacity", "r");
-    if (fp == NULL) return "no bat";
+    if (fp == NULL) {
+        strncpy(battery, "no bat", COMPONENT_LENGTH);
+        return;
+    }
 
-    fgets(line, sizeof(line), fp);
-    size_t len = strlen(line);
-    if (len > 0 && line[len-1] == '\n') {
-        line[len-1] = '\0';
+    fgets(battery, COMPONENT_LENGTH, fp);
+
+    // Remove the newline character from parsed line and replace it with null
+    // terminator
+    size_t len = strlen(battery);
+    if (len > 0 && battery[len-1] == '\n') {
+        battery[len-1] = '\0';
     }
 
     fclose(fp);
 
-    strcat(line, "% charge");
-    char tmp[COMPONENT_LENGTH];
-    snprintf(tmp, COMPONENT_LENGTH, "%s", line);
-
-    return strdup(tmp);
+    strncat(battery, "% charge", COMPONENT_LENGTH);
+    return;
 }
 
-char* print_temperature() {
+void
+print_temperature(char *temperature) {
     FILE *fp;
-    char line[COMPONENT_LENGTH];
 
     fp = fopen("/sys/class/thermal/thermal_zone0/temp", "r");
-    if (fp == NULL) return "no temp";
+    if (fp == NULL){
+        strncpy(temperature, "no temp", COMPONENT_LENGTH);
+    }
 
-    line[0] = fgetc(fp);
-    line[1] = fgetc(fp);
-    line[2] = '\0';
+    temperature[0] = fgetc(fp);
+    temperature[1] = fgetc(fp);
+    temperature[2] = '\0';
 
-    strcat(line, " C");
+    strncat(temperature, " C", COMPONENT_LENGTH);
 
     fclose(fp);
-    return strdup(line);
+    return;
 
 }
 
@@ -136,11 +150,17 @@ int main(void)
 {
     char cmd[STATUS_LENGTH];
     while (1) {
-        char *storage = print_storage();
-        char *memory = print_memory();
-        char *date = print_date();
-        char *battery = print_battery();
-        char *temperature = print_temperature();
+        char storage[COMPONENT_LENGTH];
+        char memory[COMPONENT_LENGTH];
+        char date[COMPONENT_LENGTH];
+        char battery[COMPONENT_LENGTH];
+        char temperature[COMPONENT_LENGTH];
+
+        print_storage(storage);
+        print_memory(memory);
+        print_date(date);
+        print_battery(battery);
+        print_temperature(temperature);
 
         snprintf(cmd, STATUS_LENGTH, "xsetroot -name \"%s | %s | %s | %s | %s\"",
             storage, 
@@ -153,11 +173,6 @@ int main(void)
         system(cmd);
         /* puts(cmd); */
 
-        if (storage) free(storage);
-        if (memory) free(memory);
-        if (date) free(date);
-        if (battery) free(battery);
-        if (temperature) free(temperature);
         sleep(1);
     }
 
