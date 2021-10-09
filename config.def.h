@@ -26,7 +26,7 @@ static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "Ubuntu Mono:size=14" };
 static const char dmenufont[]       = "Ubuntu Mono:size=14";
 static const char col_gray1[]       = "#282828";
-static const char col_gray2[]       = "#665c54";
+static const char col_gray2[]       = "#504945";
 /* static const char col_gray3[]       = "#7c6f64"; */
 static const char col_gray3[]       = "#fbf1c7";
 static const char col_accent[]      = "#8ec07c";
@@ -114,8 +114,8 @@ static Key keys[] = {
     { MODKEY|ControlMask,           XK_o,      incrivgaps,     {.i = -1 } },
     { MODKEY|Mod4Mask,              XK_y,      incrohgaps,     {.i = +1 } },
     { MODKEY|Mod4Mask,              XK_o,      incrohgaps,     {.i = -1 } },
-    { MODKEY|ShiftMask,             XK_y,      incrovgaps,     {.i = +20 } },
-    { MODKEY|ShiftMask,             XK_o,      incrovgaps,     {.i = -20 } },
+    { MODKEY|ShiftMask,             XK_y,      incrovgaps,     {.i = +40 } },
+    { MODKEY|ShiftMask,             XK_o,      incrovgaps,     {.i = -40 } },
     { MODKEY|ShiftMask,             XK_Return, zoom,           {0} },
     { MODKEY,                       XK_Tab,    view,           {0} },
     { MODKEY,                       XK_q,      killclient,     {0} },
