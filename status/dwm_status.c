@@ -4,6 +4,11 @@
  * Description : A status line that is more efficient than a shell script
  */
 
+
+/* TODO: CPU usage can be calculated like so: */
+/* grep 'cpu ' /proc/stat | awk '{usage=100-($5*100)/($2+$3+$4+$5+$6+$7+$8)} END {print usage}' */
+/* https://unix.stackexchange.com/questions/393566/what-does-proc-loadavg-s-cpu-and-io-utilization-mean */
+
 /* headers */
 #include <stdio.h>
 #include <stdlib.h>
