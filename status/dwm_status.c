@@ -4,15 +4,28 @@
  * Description : A status line that is more efficient than a shell script
  */
 
+/* headers */
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 #include <time.h>
 
+/* macros */
 #define STATUS_LENGTH 400
 #define COMPONENT_LENGTH 30
 #define PARSE_ERROR "bad parsing..."
+
+/* types */
+/* function declarations */
+static void get_storage(char *storage);
+static void get_memory(char *memory);
+static void get_date(char *date);
+static void get_battery(char *battery);
+static void get_temperature(char *temperature);
+
+/* global variables */
+/* function definitions */
 
 void
 get_storage(char *storage)
@@ -146,7 +159,8 @@ get_temperature(char *temperature) {
 
 }
 
-int main(void)
+int
+main(void)
 {
     char cmd[STATUS_LENGTH];
     while (1) {
@@ -173,7 +187,6 @@ int main(void)
 
         system(cmd);
         /* puts(cmd); */
-
         sleep(1);
     }
 
