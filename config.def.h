@@ -87,6 +87,7 @@ static const char *dmenucmd[] = {
 };
 static const char *termcmd[]  = { "st", NULL };
 
+/* TODO: Mod4Mask does nothing since i'm using is as the mod key */
 /* TODO: use only MODKEY and MODKEY|ShiftMask bindings */
 /* TODO: find a consistent set of keybindings between dwm and i3 */
 static Key keys[] = {
@@ -102,18 +103,22 @@ static Key keys[] = {
     { MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
     { MODKEY|Mod4Mask,              XK_h,      incrgaps,       {.i = +1 } },
     { MODKEY|Mod4Mask,              XK_l,      incrgaps,       {.i = -1 } },
+    /*
     { MODKEY|Mod4Mask|ShiftMask,    XK_h,      incrogaps,      {.i = +1 } },
     { MODKEY|Mod4Mask|ShiftMask,    XK_l,      incrogaps,      {.i = -1 } },
     { MODKEY|Mod4Mask|ControlMask,  XK_h,      incrigaps,      {.i = +1 } },
     { MODKEY|Mod4Mask|ControlMask,  XK_l,      incrigaps,      {.i = -1 } },
+    */
     { MODKEY|Mod4Mask,              XK_0,      togglegaps,     {0} },
     { MODKEY|Mod4Mask|ShiftMask,    XK_0,      defaultgaps,    {0} },
+    /*
     { MODKEY,                       XK_y,      incrihgaps,     {.i = +1 } },
     { MODKEY,                       XK_o,      incrihgaps,     {.i = -1 } },
     { MODKEY|ControlMask,           XK_y,      incrivgaps,     {.i = +1 } },
     { MODKEY|ControlMask,           XK_o,      incrivgaps,     {.i = -1 } },
-    { MODKEY|Mod4Mask,              XK_y,      incrohgaps,     {.i = +1 } },
-    { MODKEY|Mod4Mask,              XK_o,      incrohgaps,     {.i = -1 } },
+    */
+    { MODKEY,                       XK_y,      incrohgaps,     {.i = +40 } },
+    { MODKEY,                       XK_o,      incrohgaps,     {.i = -40 } },
     { MODKEY|ShiftMask,             XK_y,      incrovgaps,     {.i = +40 } },
     { MODKEY|ShiftMask,             XK_o,      incrovgaps,     {.i = -40 } },
     { MODKEY|ShiftMask,             XK_Return, zoom,           {0} },
