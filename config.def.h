@@ -46,7 +46,7 @@ static const Rule rules[] = {
      */
     /* class      instance    title      tags mask     isfloating   monitor */
     { "Gimp",     NULL,       NULL,      0,            1,           -1 },
-    { "Firefox",  NULL,       NULL,      1 << 8,       0,           -1 },
+    /* { "Firefox",  NULL,       NULL,      1 << 8,       0,           -1 }, */
 };
 
 /* layout(s) */
@@ -101,16 +101,16 @@ static Key keys[] = {
     { MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
     { MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
     { MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-    { MODKEY|Mod4Mask,              XK_h,      incrgaps,       {.i = +1 } },
-    { MODKEY|Mod4Mask,              XK_l,      incrgaps,       {.i = -1 } },
+    /* { MODKEY|Mod4Mask,              XK_h,      incrgaps,       {.i = +1 } }, */
+    /* { MODKEY|Mod4Mask,              XK_l,      incrgaps,       {.i = -1 } }, */
     /*
     { MODKEY|Mod4Mask|ShiftMask,    XK_h,      incrogaps,      {.i = +1 } },
     { MODKEY|Mod4Mask|ShiftMask,    XK_l,      incrogaps,      {.i = -1 } },
     { MODKEY|Mod4Mask|ControlMask,  XK_h,      incrigaps,      {.i = +1 } },
     { MODKEY|Mod4Mask|ControlMask,  XK_l,      incrigaps,      {.i = -1 } },
     */
-    { MODKEY|Mod4Mask,              XK_0,      togglegaps,     {0} },
-    { MODKEY|Mod4Mask|ShiftMask,    XK_0,      defaultgaps,    {0} },
+    { MODKEY,                       XK_g,      togglegaps,     {0} },
+    { MODKEY|ShiftMask,             XK_g,      defaultgaps,    {0} },
     /*
     { MODKEY,                       XK_y,      incrihgaps,     {.i = +1 } },
     { MODKEY,                       XK_o,      incrihgaps,     {.i = -1 } },
