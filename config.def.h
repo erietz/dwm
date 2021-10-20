@@ -8,6 +8,9 @@
  * - vanitygaps: https://dwm.suckless.org/patches/vanitygaps/
  */
 
+/* TODO: All brightness controls handled by xfce4-power-control */
+/* #include <X11/XF86keysym.h> /1* variables for brightness/volume controls *1/ */
+
 /* appearance */
 static const unsigned int borderpx  = 3;        /* border pixel of windows */
 static const unsigned int snap      = 32;       /* snap pixel */
@@ -63,7 +66,7 @@ static const Layout layouts[] = {
 };
 
 /* key definitions */
-#define MODKEY Mod4Mask
+#define MODKEY                  Mod4Mask
 #define TAGKEYS(KEY,TAG) \
     { MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
     { MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -86,12 +89,24 @@ static const char *dmenucmd[] = {
     NULL
 };
 static const char *termcmd[]  = { "st", NULL };
+// static const char *brightness_up[] = { 
+//     "sudo", "/bin/xbacklight", "-inc", "10", ";",
+//     "/bin/notify-send", "brightness", "up", NULL
+// };
+// static const char *brightness_down[] = {
+//     "sudo", "/bin/xbacklight", "-dec", "10", ";",
+//     "/bin/notify-send", "brightness", "down", NULL
+// };
+
 
 /* TODO: Mod4Mask does nothing since i'm using is as the mod key */
 /* TODO: use only MODKEY and MODKEY|ShiftMask bindings */
 /* TODO: find a consistent set of keybindings between dwm and i3 */
 static Key keys[] = {
     /* modifier                     key        function        argument */
+
+//    { 0,                            XF86XK_MonBrightnessUp,   spawn, {.v = brightness_up } },
+//    { 0,                            XF86XK_MonBrightnessDown, spawn, {.v = brightness_down } },
     { MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
     { MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
     { MODKEY,                       XK_b,      togglebar,      {0} },
