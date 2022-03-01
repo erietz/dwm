@@ -242,6 +242,7 @@ static void incrovgaps(const Arg *arg);
 /* static void incrivgaps(const Arg *arg); */
 static void togglegaps(const Arg *arg);
 static void defaultgaps(const Arg *arg);
+static void ultrawidegaps(const Arg *arg);
 static void setlayout(const Arg *arg);
 static void setmfact(const Arg *arg);
 static void setup(void);
@@ -1721,6 +1722,12 @@ void
 defaultgaps(const Arg *arg)
 {
     setgaps(gappoh, gappov, gappih, gappiv);
+}
+
+void
+ultrawidegaps(const Arg *arg)
+{
+    setgaps(gappoh_uw, gappov_uw, gappih, gappiv);
 }
 
 /* void */
