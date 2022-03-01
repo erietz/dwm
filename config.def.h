@@ -26,11 +26,10 @@ static const unsigned int gappov    = 10;       /* vert outer gap between window
 static const int smartgaps          = 0;        /* 1 means no outer gap when there is only one window */
 static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
-static const char *fonts[]          = { "JetBrains Mono:size=14" };
-static const char dmenufont[]       = "JetBrains Mono:size=14";
+static const char *fonts[]          = { "JetBrains Mono:size=12" };
+static const char dmenufont[]       = "JetBrains Mono:size=12";
 static const char col_gray1[]       = "#282828";
 static const char col_gray2[]       = "#504945";
-/* static const char col_gray3[]       = "#7c6f64"; */
 static const char col_gray3[]       = "#fbf1c7";
 static const char col_accent[]      = "#8ec07c";
 static const char *colors[][3]      = {
@@ -49,7 +48,9 @@ static const Rule rules[] = {
      */
     /* class      instance    title      tags mask     isfloating   monitor */
     { "Gimp",     NULL,       NULL,      0,            1,           -1 },
-    /* { "Firefox",  NULL,       NULL,      1 << 8,       0,           -1 }, */
+    { "Firefox",  NULL,       NULL,      1 << 1,       0,           -1 },
+    { "discord",  NULL,       NULL,      1 << 8,       0,           -1 },
+    { "Spotify",  NULL,       NULL,      1 << 7,       0,           -1 },
 };
 
 /* layout(s) */
@@ -90,14 +91,9 @@ static const char *dmenucmd[] = {
 };
 static const char *termcmd[]  = { "st", NULL };
 static const char *roficmd[] = { "rofi", "-show", "drun", NULL };
-// static const char *brightness_up[] = { 
-//     "sudo", "/bin/xbacklight", "-inc", "10", ";",
-//     "/bin/notify-send", "brightness", "up", NULL
-// };
-// static const char *brightness_down[] = {
-//     "sudo", "/bin/xbacklight", "-dec", "10", ";",
-//     "/bin/notify-send", "brightness", "down", NULL
-// };
+static const char *scrot[] = { "scrot", "-e", "notify-send 'screenshot taken'", NULL };
+static const char *scrot_select[] = { "scrot", "--select", "-e", "notify-send 'screenshot taken'", NULL };
+static const char *scrot_window[] = { "scrot", "--focused", "-e", "notify-send 'screenshot taken'", NULL };
 
 
 /* TODO: Mod4Mask does nothing since i'm using is as the mod key */
@@ -106,11 +102,12 @@ static const char *roficmd[] = { "rofi", "-show", "drun", NULL };
 static Key keys[] = {
     /* modifier                     key        function        argument */
 
-//    { 0,                            XF86XK_MonBrightnessUp,   spawn, {.v = brightness_up } },
-//    { 0,                            XF86XK_MonBrightnessDown, spawn, {.v = brightness_down } },
     { MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
     { MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
     { MODKEY,                       XK_r,      spawn,          {.v = roficmd } },
+    { MODKEY,                       XK_s,      spawn,          {.v = scrot_window } },
+    { MODKEY|ShiftMask,             XK_s,      spawn,          {.v = scrot_select } },
+    { MODKEY|ControlMask,           XK_s,      spawn,          {.v = scrot } },
     { MODKEY,                       XK_b,      togglebar,      {0} },
     { MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
     { MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
@@ -148,6 +145,7 @@ static Key keys[] = {
     TAGKEYS(                        XK_8,                      7)
     TAGKEYS(                        XK_9,                      8)
     { MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+
 };
 
 /* button definitions */
