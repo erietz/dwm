@@ -2,14 +2,7 @@
  * Author      : Ethan Rietz
  * Date        : 2021-09-11
  * Description : Config file for DWM
- *
- * Patches applied:
- * - systray: https://dwm.suckless.org/patches/systray/
- * - vanitygaps: https://dwm.suckless.org/patches/vanitygaps/
  */
-
-/* TODO: All brightness controls handled by xfce4-power-control */
-/* #include <X11/XF86keysym.h> /1* variables for brightness/volume controls *1/ */
 
 /* appearance */
 static const unsigned int borderpx  = 3;        /* border pixel of windows */
@@ -97,13 +90,9 @@ static const char *scrot[] = { "scrot", "-e", "notify-send 'screenshot taken'", 
 static const char *scrot_select[] = { "scrot", "--select", "-e", "notify-send 'screenshot taken'", NULL };
 static const char *scrot_window[] = { "scrot", "--focused", "-e", "notify-send 'screenshot taken'", NULL };
 
-
-/* TODO: Mod4Mask does nothing since i'm using is as the mod key */
-/* TODO: use only MODKEY and MODKEY|ShiftMask bindings */
-/* TODO: find a consistent set of keybindings between dwm and i3 */
+/* key bindings */
 static Key keys[] = {
     /* modifier                     key        function        argument */
-
     { MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
     { MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
     { MODKEY,                       XK_r,      spawn,          {.v = roficmd } },
@@ -148,7 +137,6 @@ static Key keys[] = {
     TAGKEYS(                        XK_8,                      7)
     TAGKEYS(                        XK_9,                      8)
     { MODKEY|ShiftMask,             XK_q,      quit,           {0} },
-
 };
 
 /* button definitions */
