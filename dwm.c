@@ -2007,7 +2007,7 @@ tile(Monitor *m)
     }
 
     if (n > m->nmaster)
-        mw = m->nmaster ? (m->ww + m->gappiv*ie) * m->mfact : 0;
+        mw = m->nmaster ? (m->ww - 2*m->gappov + m->gappiv*ie ) * m->mfact : 0;
     else
         mw = m->ww - 2*m->gappov*oe + m->gappiv*ie;
     for (i = 0, my = ty = m->gappoh*oe, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
