@@ -211,6 +211,7 @@ static void manage(Window w, XWindowAttributes *wa);
 static void mappingnotify(XEvent *e);
 static void maprequest(XEvent *e);
 static void monocle(Monitor *m);
+static void monoclegaps(Monitor *m);
 static void motionnotify(XEvent *e);
 static void movemouse(const Arg *arg);
 static Client *nexttiled(Client *c);
@@ -1261,6 +1262,28 @@ monocle(Monitor *m)
         snprintf(m->ltsymbol, sizeof m->ltsymbol, "[%d]", n);
     for (c = nexttiled(m->clients); c; c = nexttiled(c->next))
         resize(c, m->wx, m->wy, m->ww - 2 * c->bw, m->wh - 2 * c->bw, 0);
+}
+
+void
+monoclegaps(Monitor *m)
+{
+    unsigned int n = 0;
+    Client *c;
+
+    for (c = m->clients; c; c = c->next)
+        if (ISVISIBLE(c))
+            n++;
+    if (n > 0) /* override layout symbol */
+        snprintf(m->ltsymbol, sizeof m->ltsymbol, "{%d}", n);
+    for (c = nexttiled(m->clients); c; c = nexttiled(c->next))
+        resize(
+				c,
+				m->wx + m->gappov,
+				m->wy + m->gappoh,
+				m->ww - 2 * c->bw - 2 * m->gappov,
+				m->wh - 2 * c->bw - 2 * m->gappoh,
+				0
+			);
 }
 
 void
