@@ -26,7 +26,7 @@ static const char dmenufont[]       = "JetBrains Mono:size=13";
 static const char col_gray1[]       = "#282828";
 static const char col_gray2[]       = "#504945";
 static const char col_gray3[]       = "#fbf1c7";
-static const char col_accent[]      = "#8ec07c";
+static const char col_accent[]      = "#80b1d3";
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
