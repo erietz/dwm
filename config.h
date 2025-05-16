@@ -23,10 +23,10 @@ static const int showbar            = 1;        /* 0 means no bar */
 static const int topbar             = 1;        /* 0 means bottom bar */
 static const char *fonts[]          = { "JetBrains Mono:size=13" };
 static const char dmenufont[]       = "JetBrains Mono:size=13";
-static const char col_gray1[]       = "#202224";
-static const char col_gray2[]       = "#253443";
-static const char col_gray3[]       = "#ffffff";
-static const char col_accent[]      = "#007d9c";
+static const char col_gray1[]       = "#1c1f1a"; // deep mossy black (background)
+static const char col_gray2[]       = "#2e3f38"; // muted forest green (status bar)
+static const char col_gray3[]       = "#d6e3dd"; // soft pale mint (text)
+static const char col_accent[]      = "#8fbf9f"; // sage green (highlight)
 static const char *colors[][3]      = {
 	/*               fg         bg         border   */
 	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
